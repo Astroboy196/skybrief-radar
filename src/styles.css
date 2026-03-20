@@ -1,0 +1,205 @@
+@import "tailwindcss";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+:root {
+  /* SkyBrief Radar V2 — Dark Aviation Theme */
+  --color-bg-primary: #0a0e27;
+  --color-bg-secondary: #111638;
+  --color-bg-panel: rgba(17, 22, 56, 0.85);
+  --color-border: rgba(99, 132, 255, 0.15);
+  --color-accent: #4f8cff;
+  --color-accent-dim: rgba(79, 140, 255, 0.3);
+  --color-text-primary: #e8ecf4;
+  --color-text-secondary: #8892b0;
+  --color-text-muted: #5a6380;
+
+  /* Experience Badge Colors */
+  --color-badge-beginner: #22c55e;
+  --color-badge-intermediate: #3b82f6;
+  --color-badge-advanced: #a855f7;
+  --color-badge-expert: #eab308;
+  --color-badge-master: #06b6d4;
+
+  /* Flight Phase Colors */
+  --color-phase-ground: #6b7280;
+  --color-phase-departing: #06b6d4;
+  --color-phase-cruising: #e8ecf4;
+  --color-phase-arriving: #f59e0b;
+  --color-phase-streaming: #ef4444;
+
+  /* Social Brand Colors */
+  --color-twitch: #9146ff;
+  --color-youtube: #ff0000;
+  --color-instagram: #e1306c;
+}
+
+/* Glass Morphism for Panels */
+.glass-panel {
+  background: var(--color-bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+/* Pulsing LIVE indicator */
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  50% { opacity: 0.85; box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+.live-pulse {
+  animation: pulse-live 2s ease-in-out infinite;
+}
+
+/* Smooth panel transitions */
+.panel-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+.panel-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+.panel-exit {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.25s cubic-bezier(0.5, 0, 0.75, 0), opacity 0.15s ease;
+}
+
+/* ---- Hover Tooltip (Phase 3) ---- */
+
+.pilot-tooltip .maplibregl-popup-content {
+  background: rgba(15, 19, 41, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(99, 132, 255, 0.18) !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  color: #e2e8f0;
+}
+
+.pilot-tooltip .maplibregl-popup-tip {
+  border-top-color: rgba(15, 19, 41, 0.92) !important;
+  border-bottom-color: rgba(15, 19, 41, 0.92) !important;
+}
+
+/* ---- Mobile Responsive (Phase 18) ---- */
+
+/* Panels become bottom sheets on mobile */
+@media (max-width: 768px) {
+  #pilot-card-panel,
+  #airport-panel {
+    top: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 70vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  #pilot-card-panel.panel-enter,
+  #airport-panel.panel-enter {
+    transform: translateY(100%);
+  }
+  #pilot-card-panel.panel-active,
+  #airport-panel.panel-active {
+    transform: translateY(0);
+  }
+  #pilot-card-panel.panel-exit,
+  #airport-panel.panel-exit {
+    transform: translateY(100%);
+  }
+
+  #settings-panel {
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 0;
+  }
+
+  #status-bar {
+    bottom: 8px !important;
+    font-size: 10px;
+    padding: 6px 12px !important;
+    gap: 8px !important;
+  }
+}
+
+/* Larger touch targets on mobile */
+@media (pointer: coarse) {
+  .maplibregl-ctrl button {
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+
+/* ---- MapLibre Overrides ---- */
+
+.maplibregl-ctrl-group {
+  background: var(--color-bg-panel) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+.maplibregl-ctrl-group button {
+  border: none !important;
+  background: transparent !important;
+}
+
+.maplibregl-ctrl-group button + button {
+  border-top: 1px solid var(--color-border) !important;
+}
+
+.maplibregl-ctrl-group button:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  filter: invert(1) brightness(0.7);
+}
+
+.maplibregl-ctrl-attrib {
+  background: transparent !important;
+  color: var(--color-text-muted) !important;
+  font-size: 10px !important;
+}
+
+.maplibregl-ctrl-attrib a {
+  color: var(--color-text-muted) !important;
+}
+
+.maplibregl-ctrl-scale {
+  background: var(--color-bg-panel) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-secondary) !important;
+  font-size: 10px !important;
+  border-radius: 4px !important;
+}
+
+/* ---- Scrollbar Styling ---- */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 132, 255, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 132, 255, 0.3);
+}
